@@ -1,0 +1,15 @@
+pandas
+numpy
+scipy
+statsmodels
+tqdm
+matplotlib
+plotly
+seaborn
+nbformat
+ipykernel
+black
+requests
+ta
+quant-invest-lab
+latex

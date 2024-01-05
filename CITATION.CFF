@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it using the following DOI.
+title: FORECASTING HIGH LOW WITH KALMAN FILTERS
+version: 0.2.1
+authors:
+  - name: Jeanne COLLOT
+    email: jeanne.collot@dauphine.eu
+  - name: Milo SEGUIN
+    email: milo.seguin@dauphine.eu
+  - name: Ayman OTHMANE
+    email: ayman.othmane@dauphine.eu
+  - name: Baptiste ZLOCH
+    email: baptiste.zloch@dauphine.eu
+license: MIT
