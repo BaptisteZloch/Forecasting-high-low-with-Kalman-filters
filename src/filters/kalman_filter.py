@@ -62,7 +62,7 @@ class SimplestKalmanFilter1D:
 
 
 # https://towardsdatascience.com/exposing-the-power-of-the-kalman-filter-1b78621c3f56
-class KalmanFilter:
+class KalmanFilterND:
     """
     An implementation of the classic Kalman Filter for linear dynamic systems.
     The Kalman Filter is an optimal recursive data processing algorithm which
