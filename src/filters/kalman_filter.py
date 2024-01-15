@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 # from : https://medium.com/@akjha22/kalman-filters-for-stock-price-signal-generation-f64015da637d
 class SimplestKalmanFilter1D:
-    def __init__(self, Q: Union[float, int], R: Union[float, int]):
+    def __init__(self, Q: Union[np.float64, int], R: Union[np.float64, int]):
         # Process noise variance
         self.Q = Q
         # Measurement noise variance

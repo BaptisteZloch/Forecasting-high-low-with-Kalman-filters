@@ -10,14 +10,14 @@ from utility.constants import BUSINESS_DAYS
 class StochasticModels:
     @staticmethod
     def simulate_random_walk_process(
-        T: Union[float, int] = 2,
-        s0: Union[float, int] = 100,
+        T: Union[np.float64, int] = 2,
+        s0: Union[np.float64, int] = 100,
     ):
         """Simulate a random walk from a Brownian motion for daily data.
 
         Args:
-            T (Union[float, int], optional): The horizon in years. Defaults to 2.
-            s0 (Union[float, int], optional): The starting point value. Defaults to 100.
+            T (Union[np.float64, int], optional): The horizon in years. Defaults to 2.
+            s0 (Union[np.float64, int], optional): The starting point value. Defaults to 100.
 
         Returns:
             Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]: A tuple containing the time and the corresponding path.
@@ -31,18 +31,18 @@ class StochasticModels:
 
     @staticmethod
     def simulate_arithmetic_brownian_motion_process(
-        T: Union[float, int] = 2,
-        mu: Union[float, int] = 0.2,
-        sigma: Union[float, int] = 0.30,
-        s0: Union[float, int] = 100,
+        T: Union[np.float64, int] = 2,
+        mu: Union[np.float64, int] = 0.2,
+        sigma: Union[np.float64, int] = 0.30,
+        s0: Union[np.float64, int] = 100,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         """Simulate an arithmetic Brownian motion for daily data.
 
         Args:
-            T (Union[float, int], optional): The horizon in years. Defaults to 2.
-            mu (Union[float, int], optional): The average growth rate by year. Defaults to 0.2.
-            sigma (Union[float, int], optional): The annual volatility. Defaults to 0.30.
-            s0 (Union[float, int], optional): The starting point value. Defaults to 100.
+            T (Union[np.float64, int], optional): The horizon in years. Defaults to 2.
+            mu (Union[np.float64, int], optional): The average growth rate by year. Defaults to 0.2.
+            sigma (Union[np.float64, int], optional): The annual volatility. Defaults to 0.30.
+            s0 (Union[np.float64, int], optional): The starting point value. Defaults to 100.
 
         Returns:
             Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]: A tuple containing the time and the corresponding path.
@@ -64,18 +64,18 @@ class StochasticModels:
 
     @staticmethod
     def simulate_geometric_brownian_motion_process(
-        T: Union[float, int] = 2,
-        mu: Union[float, int] = 0.20,
-        sigma: Union[float, int] = 0.40,
-        s0: Union[float, int] = 100,
+        T: Union[np.float64, int] = 2,
+        mu: Union[np.float64, int] = 0.20,
+        sigma: Union[np.float64, int] = 0.40,
+        s0: Union[np.float64, int] = 100,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         """Simulate a geometric Brownian motion for daily data.
 
         Args:
-            T (Union[float, int], optional): The horizon in years. Defaults to 2.
-            mu (Union[float, int], optional): The average growth rate by year. Defaults to 0.2.
-            sigma (Union[float, int], optional): The annual volatility. Defaults to 0.30.
-            s0 (Union[float, int], optional): The starting point value. Defaults to 100.
+            T (Union[np.float64, int], optional): The horizon in years. Defaults to 2.
+            mu (Union[np.float64, int], optional): The average growth rate by year. Defaults to 0.2.
+            sigma (Union[np.float64, int], optional): The annual volatility. Defaults to 0.30.
+            s0 (Union[np.float64, int], optional): The starting point value. Defaults to 100.
 
         Returns:
             Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]: A tuple containing the time and the corresponding path.
