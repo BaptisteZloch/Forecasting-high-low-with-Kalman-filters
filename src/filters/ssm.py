@@ -22,8 +22,7 @@ class DSSM:
             x_k (np.float64): x_k is a 1x1 vector a np.float64 then, with the one element being the log volatility.
             u_k (npt.NDArray[np.float64]): an exogenous input 3x1 of the system, assumed known, with the following elements: log price, log price at time t-1, z.
             v_k (npt.NDArray[np.float64]): the process noise that drives the dynamic system,
-            w (npt.NDArray[np.float64]): the parameters vector.
-
+            w (npt.NDArray[np.float64]): the parameters vector : [kappa, theta, xi, rho, mu, p, ]
         Returns:
             np.float64: _description_
         """
