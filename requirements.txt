@@ -11,6 +11,6 @@ ipykernel
 black
 requests
 ta
-quant-invest-lab>=0.2.11
+quant-invest-lab
 latex
 sdeint
