@@ -32,8 +32,8 @@ class StochasticModels:
     @staticmethod
     def simulate_arithmetic_brownian_motion_process(
         T: Union[np.float64, int] = 2,
-        mu: Union[np.float64, int] = 0.2,
-        sigma: Union[np.float64, int] = 0.30,
+        mu: np.float64 = 0.2,
+        sigma: np.float64 = 0.30,
         s0: Union[np.float64, int] = 100,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         """Simulate an arithmetic Brownian motion for daily data.
