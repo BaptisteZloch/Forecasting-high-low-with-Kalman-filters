@@ -174,6 +174,26 @@ class StochasticModels:
         t = np.linspace(0, T, n_steps + 1)
         return t, S, V
 
+    @staticmethod
+    def generate_two_correlated_brownian(
+        rho: float = 0.5, n_steps: int = 1000, dt: float = 0.01
+    ):
+        """Generate two correlated Brownian motions.
+
+        Args:
+            rho (float, optional): Correlation between the two Brownian motions. Defaults to 0.5.
+            n_steps (int, optional): Number of steps to simulate. Defaults to 1000.
+            dt (float, optional): Time step. Defaults to 0.01.
+
+        Returns:
+            Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: The two correlated Brownian motions.
+        """
+        # Generate correlated Brownian motions
+        dW = np.random.multivariate_normal(
+            [0, 0], [[dt, rho * dt], [rho * dt, dt]], size=(n_steps + 1,)
+        )
+        return dW[:, 0], dW[:, 1]
+
     # TODO: Implement the following stochastic models
     @staticmethod
     def simulate_mean_reverting_process():
