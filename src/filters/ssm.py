@@ -20,14 +20,13 @@ class DSSM:
 
         Args:
             x_k (np.float64): x_k is a 1x1 vector a np.float64 then, with the one element being the log volatility.
-            u_k (npt.NDArray[np.float64]): an exogenous input 3x1 of the system, assumed known, with the following elements: log price, log price at time t-1, z.
+            u_k (npt.NDArray[np.float64]): an exogenous/control input 3x1 of the system, assumed known, with the following elements: log price, log price at time t-1, z.
             v_k (npt.NDArray[np.float64]): the process noise that drives the dynamic system,
             w (npt.NDArray[np.float64]): the parameters vector : [kappa, theta, xi, rho, mu, p, ]
         Returns:
             np.float64: _description_
         """
         # TODO: How to handle the v_k noise?
-        # TODO: How to handle the Brownian motion? currently it is in the exogenous vector.
 
         return compute_next_step_log_vol(
             x_k, u_k[0], u_k[1], u_k[2], w[0], w[1], w[2], w[3], w[4], w[5], dt=1
