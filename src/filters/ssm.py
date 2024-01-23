@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 import numpy as np
 import numpy.typing as npt
 
@@ -9,29 +9,82 @@ from utility.math_equations import (
 
 
 class DSSM:
-    @staticmethod
+    # _instance = None
+
+    def __init__(
+        self,
+        w_params: Union[List[np.float64], npt.NDArray[np.float64]],
+    ) -> None:
+        """The constructor of the DSSM class.
+
+        Args:
+        ----
+            w_params (Union[List[np.float64], npt.NDArray[np.float64]]): the parameters vector : [kappa, theta, xi, rho, mu, p, ]
+        """
+        self.w = w_params
+
     def f(
-        x_k: np.float64,
+        self,
+        x_k: npt.NDArray[np.float64],
         u_k: npt.NDArray[np.float64],
         v_k: npt.NDArray[np.float64],
-        w: npt.NDArray[np.float64],
-    ) -> Union[np.float64, np.float64]:
+    ) -> npt.NDArray[np.float64]:
         """The non linear state function of the DSSM. Predict the next step log volatility (our state variable).
 
         Args:
-            x_k (np.float64): x_k is a 1x1 vector a np.float64 then, with the one element being the log volatility.
+        ----
+            x_k (npt.NDArray[np.float64]): x_k is the state vector of the system, with the following elements: log vol at time t, log vol at time t-1, log vol at time t-2.
             u_k (npt.NDArray[np.float64]): an exogenous/control input 3x1 of the system, assumed known, with the following elements: log price, log price at time t-1, z.
-            v_k (npt.NDArray[np.float64]): the process noise that drives the dynamic system,
-            w (npt.NDArray[np.float64]): the parameters vector : [kappa, theta, xi, rho, mu, p, ]
+            v_k (npt.NDArray[np.float64]): the process noise that drives the dynamic system
+
         Returns:
+        ----
             np.float64: _description_
         """
         # TODO: How to handle the v_k noise?
 
-        return compute_next_step_log_vol(
-            x_k, u_k[0], u_k[1], u_k[2], w[0], w[1], w[2], w[3], w[4], w[5], dt=1
+        return np.array(
+            [
+                np.abs(compute_next_step_log_vol(
+                    x_k[0],  # log vol at time t
+                    x_k[1],  # log vol at time t-1
+                    x_k[2],  # log vol at time t-2
+                    u_k[0],  # brownian motion at time t
+                    self.w[0],  # kappa
+                    self.w[1],  # theta
+                    self.w[2],  # xi
+                    self.w[3],  # rho
+                    self.w[4],  # mu
+                    self.w[5],  # p
+                    dt=1,
+                )),  # log vol at time t+1
+                x_k[1],  # log price at time t
+                x_k[2],  # log price at time t-1
+            ]
         )
 
-    @staticmethod
-    def h(x_k, u_k, v_k, w) -> np.float64:
-        return compute_currrent_step_log_price(x_k, u_k[0], w[4], u_k[2], u_k[1])
+    def h(
+        self,
+        x_k: npt.NDArray[np.float64],
+        u_k: npt.NDArray[np.float64],
+        v_k: npt.NDArray[np.float64],
+    ) -> npt.NDArray[np.float64]:
+        return np.array(
+            [x_k[0], compute_currrent_step_log_price(x_k[1], x_k[0], self.w[4], u_k[1], dt=1), x_k[1]]
+        )
+        # return np.array(
+        #     [compute_currrent_step_log_price(x_k[1], x_k[0], self.w[4], u_k[1], dt=1)]
+        # )
+
+    # @property
+    # def w(self) -> Union[List[np.float64], npt.NDArray[np.float64]]:
+    #     return self.w
+
+    # @w.setter
+    # def w(self, w_params: Union[List[np.float64], npt.NDArray[np.float64]]) -> None:
+    #     self.w = w_params
+
+    # def __new__(cls, *args, **kwargs) -> Self:
+    #     if cls._instance is None:
+    #         cls._instance = super(DSSM, cls).__new__(cls)
+    #     return cls._instance
