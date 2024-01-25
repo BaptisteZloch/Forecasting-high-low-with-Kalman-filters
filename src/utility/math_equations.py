@@ -55,7 +55,7 @@ def compute_next_step_log_vol(
 
 def compute_currrent_step_log_price(
     previous_step_log_price: np.float64,
-    current_step_vol: np.float64,
+    current_step_log_vol: np.float64,
     mu: np.float64,
     current_step_b: np.float64,
     dt: int = 1,
@@ -64,7 +64,7 @@ def compute_currrent_step_log_price(
 
     Args:
         previous_step_log_price (np.float64): The log price at time t - dt.
-        current_step_vol (np.float64): The log volatility at time t.
+        current_step_log_vol (np.float64): The log volatility at time t.
         mu (np.float64): _description_
         current_step_b (np.float64): _description_
         dt (np.float64): The time step.
@@ -74,6 +74,6 @@ def compute_currrent_step_log_price(
     """
     return (
         previous_step_log_price
-        + (mu - 0.5 * current_step_vol) * dt
-        + sqrt(dt) * sqrt(current_step_vol) * current_step_b
+        + (mu - 0.5 * exp(current_step_log_vol)) * dt
+        + sqrt(dt) * sqrt(exp(current_step_log_vol)) * current_step_b
     )

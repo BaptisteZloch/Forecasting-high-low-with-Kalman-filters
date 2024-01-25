@@ -2,6 +2,7 @@ from typing import Callable, Optional, Tuple
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
+import scipy
 
 
 class UnscentedKalmanFilter:
@@ -68,6 +69,9 @@ class UnscentedKalmanFilter:
         ],
         z: npt.NDArray[np.float64],
         u: Optional[npt.NDArray[np.float64]] = None,
+        x0: Optional[npt.NDArray[np.float64]] = None,
+        verbose: bool = False,
+        keep_state_estimates: bool = False,
     ) -> Tuple[npt.NDArray[np.float64], ...]:
         """Fit the UKF on the observations dataset and return the filtered state vector and the filtered state covariance matrix
 
@@ -82,16 +86,19 @@ class UnscentedKalmanFilter:
         ----
             Tuple[npt.NDArray[np.float64],...]: The filtered state vector a each step (shape: (n_samples, n_features)), the filtered state covariance matrix (shape: (n_samples, n_features, n_features))
         """
+        self.verbose = verbose
         if u is None:
             u = np.zeros(shape=z.shape)
 
-        X_hat = np.zeros((z.shape[0], z.shape[-1]))
-        X_hat[0] = z[0]
-        P_var = np.zeros((z.shape[0], z.shape[1], z.shape[1]))
-        P_var[0] = np.array([[1.0, 0.0], [0.0, 1.0]])
-
+        X_hat = np.zeros((z.shape[0], self.dim_x))
+        X_hat[0] = x0
+        P_var = np.zeros((z.shape[0], self.dim_x, self.dim_x))
+        P_var[0] = np.eye(P_var[0].shape[0])
+        if keep_state_estimates:
+            X_hat_estim = np.zeros(X_hat.shape)
+            X_hat_estim[0] = X_hat[0]
         for i in tqdm(
-            range(1, z.shape[0]), desc="UKF", leave=False, total=z.shape[0] - 1
+            range(1, z.shape[0]), desc="UKF", leave=True, total=z.shape[0] - 1
         ):
             x1, P1, _ = self.__UKF_predict(
                 state_function,
@@ -99,6 +106,8 @@ class UnscentedKalmanFilter:
                 P_var[i - 1],
                 u[i - 1],
             )
+            if keep_state_estimates is True:
+                X_hat_estim[i] = x1
             X_hat[i], P_var[i], _ = self.__UKF_correct(
                 observation_function,
                 x1,
@@ -106,7 +115,8 @@ class UnscentedKalmanFilter:
                 z[i],
                 u[i - 1],
             )
-
+        if keep_state_estimates:
+            return X_hat, P_var, X_hat_estim
         return X_hat, P_var
 
     def __UKF_predict(
@@ -185,13 +195,15 @@ class UnscentedKalmanFilter:
         y_sigmas = np.zeros((self.dim_z, self.n_sigma))
         for i in range(self.n_sigma):
             y_sigmas[:, i] = observation_function(xx_sigmas[:, i], u, xn_sigmas[:, i])
-
+        if self.verbose:
+            print(f"y_sigmas={y_sigmas}")
         y, Pyy = self.__calculate_mean_and_covariance(y_sigmas)
 
         Pxy = self.__calculate_cross_correlation(x, xx_sigmas, y, y_sigmas)
 
         K = Pxy @ np.linalg.pinv(Pyy)
-
+        if self.verbose:
+            print("x=", x, "\nK=", K, "\nz=", z, "\ny=", y)
         x = x + (K @ (z - y))
         P = P - (K @ Pyy @ K.T)
 
@@ -215,8 +227,11 @@ class UnscentedKalmanFilter:
 
         x_sigma = np.zeros((nx, self.n_sigma))
         x_sigma[:, 0] = x
+        if self.verbose:
+            print(f"P={P}")
 
-        S = np.linalg.cholesky(P)
+        _, S, _ = scipy.linalg.lu(P)
+        # S = np.linalg.cholesky(P)
 
         for i in range(nx):
             x_sigma[:, i + 1] = x + (self.sigma_scale * S[:, i])
