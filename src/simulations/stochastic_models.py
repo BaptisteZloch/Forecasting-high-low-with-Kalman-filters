@@ -5,6 +5,7 @@ import numpy.typing as npt
 from tqdm import tqdm
 
 from utility.constants import BUSINESS_DAYS
+from utility.math_equations import compute_current_price, compute_current_variance
 
 
 class StochasticModels:
@@ -171,6 +172,59 @@ class StochasticModels:
                 )
                 + poisson_jumps[i]
             )
+        t = np.linspace(0, T, n_steps + 1)
+        return t, S, V
+
+    @staticmethod
+    def simulate_heston_process(
+        T: float = 2,
+        s0: float = 100,
+        kappa: float = 19,
+        theta: float = 0.27**2,
+        xi: float = 0.01,
+        rho: float = -0.2,
+        mu: float = 0.3,
+    ) -> Tuple[
+        npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]
+    ]:
+        """Generate a Heston model path with jumps.
+
+        Args:
+        -----
+            T (int, optional): The horizon in years. Defaults to 2.
+            s0 (float, optional): The starting point value. Defaults to 100.
+            kappa (float, optional): Mean reversion speed. Defaults to 4.
+            theta (float, optional): Long-run mean of variance. Defaults to 0.27.
+            xi (float, optional): Volatility of volatility. Defaults to 0.99.
+            rho (float, optional): Correlation between asset price and variance. Defaults to -0.2.
+            mu (float, optional): The average growth rate by year. Defaults to 0.3.
+
+
+        Returns:
+        -----
+            Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]: The time, the asset price and the volatility paths.
+        """
+        assert 2 * kappa * theta > xi**2, "Feller condition not satisfied"
+        # Initialize variables
+        n_steps = int(252 * T)
+        dt = T / n_steps
+        S = np.zeros(n_steps + 1)
+        V = np.zeros(n_steps + 1)
+
+        # Generate correlated Brownian motions
+        dW = np.random.multivariate_normal(
+            [0, 0], [[dt, rho * dt], [rho * dt, dt]], size=(n_steps + 1,)
+        )
+
+        # Generate asset price and volatility paths
+        S[0] = s0
+        V[0] = theta
+        for i in tqdm(
+            range(1, n_steps + 1), desc="Generating path", total=n_steps, leave=False
+        ):
+            V[i] = compute_current_variance(V[i - 1], kappa, theta, xi, dt, dW[i, 0])
+            S[i] = compute_current_price(S[i - 1], V[i - 1], mu, dt, dW[i, 1])
+
         t = np.linspace(0, T, n_steps + 1)
         return t, S, V
 

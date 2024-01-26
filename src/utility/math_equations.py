@@ -28,11 +28,12 @@ def compute_current_variance(
     ----
         np.float64: THe variance at time t + dt.
     """
-    return (
-        previous_variance
-        + kappa * (theta - previous_variance) * dt
-        + xi * np.sqrt(previous_variance) * dW**2
+    v = (
+        np.abs(previous_variance)
+        + kappa * (theta - np.abs(previous_variance)) * dt
+        + xi * np.sqrt(np.abs(previous_variance)) * dW
     )
+    return np.abs(v)
 
 
 def compute_current_price(
@@ -57,7 +58,9 @@ def compute_current_price(
         np.float64: The price at time t + dt.
     """
     return previous_price * (
-        1 + (mu - 0.5 * previous_variance) * dt + np.sqrt(previous_variance) * dW
+        1
+        + (mu - 0.5 * previous_variance) * dt
+        + np.sqrt(np.abs(previous_variance)) * dW
     )
 
 
