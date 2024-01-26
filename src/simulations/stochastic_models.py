@@ -103,7 +103,7 @@ class StochasticModels:
 
     @staticmethod
     def simulate_heston_process_with_jump(
-        T: int = 2,
+        T: float = 2,
         s0: float = 100,
         kappa: float = 4,
         theta: float = 0.27,
