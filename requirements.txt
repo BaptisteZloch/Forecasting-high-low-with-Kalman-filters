@@ -14,4 +14,7 @@ ta
 quant-invest-lab>=0.2.11
 latex
 sdeint
+tensorflow
+keras
+scikit-learn
 openpyxl
