@@ -185,7 +185,7 @@ def profit_factor(returns: pd.Series) -> float:
 
 def compounded_annual_growth_rate(
     returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
 ) -> float:
     """Also know as CAGR the compounded annual growth rate is the mean annual growth rate of an investment over a specified period of time longer than one year.
 
@@ -224,7 +224,7 @@ def expectancy(
 
 def sharpe_ratio(
     returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
     risk_free_rate: float = 0.03,
 ) -> float:
     """The economist William F. Sharpe proposed the Sharpe ratio in 1966 as an extension of his work on the Capital Asset Pricing Model (CAPM). It is defined as the difference between the returns of the investment and the risk-free return, divided by the standard deviation of the investment.
@@ -264,7 +264,7 @@ def tail_ratio(returns: pd.Series, percentile: int = 5) -> float:
 def burke_ratio(
     returns: pd.Series,
     n_drawdowns: int = 10,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
     risk_free_rate: float = 0.0,
 ) -> float:
     """The burke ratio is a risk-adjusted measure of return based on drawdowns. It is similar to the Sharpe ratio, except it uses the worst drawdowns as the measurement of volatility instead of standard deviation. If n_drawdowns is 1, then we have the Calmar ratio. Details here : https://breakingdownfinance.com/finance-topics/performance-measurement/burke-ratio
@@ -291,7 +291,7 @@ def burke_ratio(
 def treynor_ratio(
     returns: pd.Series,
     benchmark_returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
     risk_free_rate: float = 0.03,
 ) -> float:
     """The Treynor ratio is a risk-adjusted measure of return based on systematic risk. It is similar to the Sharpe ratio, except it uses beta as the measurement of volatility instead of standard deviation.
@@ -316,7 +316,7 @@ def treynor_ratio(
 
 def sortino_ratio(
     returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
     risk_free_rate: float = 0.03,
 ) -> float:
     """The Sortino ratio is very similar to the Sharpe ratio, the only difference being that where the Sharpe ratio uses all the observations for calculating the standard deviation the Sortino ratio only considers the harmful variance.
@@ -339,7 +339,7 @@ def sortino_ratio(
 def omega_ratio(
     returns: pd.Series,
     annual_return_threshold: float = 0.05,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
 ) -> float:
     """Given an annual return target (e.g. 5%), the Omega ratio is the probability that the strategy will return more than the target. The higher the Omega ratio, the better the strategy.
 
@@ -366,7 +366,7 @@ def omega_ratio(
 
 def calmar_ratio(
     returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
 ) -> float:
     """The final risk/reward ratio we will consider is the Calmar ratio. This is similar to the other ratios, with the key difference being that the Calmar ratio uses max drawdown in the denominator as opposed to standard deviation.
 
@@ -386,7 +386,7 @@ def calmar_ratio(
 def information_ratio(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
 ) -> float:
     """The information ratio (IR) is a measurement of portfolio returns beyond the returns of a benchmark, usually an index, compared to the volatility of those returns. The information ratio (IR) measures a portfolio manager's ability to generate excess returns relative to a benchmark but also attempts to identify the consistency of the investor.
 
@@ -410,7 +410,7 @@ def information_ratio(
 def tracking_error(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
 ) -> float:
     """Tracking error is the divergence between the price behavior of a position or a portfolio and the price behavior of a benchmark.
 
@@ -431,7 +431,7 @@ def tracking_error(
 
 def downside_risk(
     returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
 ) -> float:
     """Downside risk or Semi-Deviation is a method of measuring the fluctuations below the mean, unlike variance or standard deviation it only looks at the negative price fluctuations and it's used to evaluate the downside risk (The risk of loss in an investment) of an investment.
 
@@ -511,7 +511,7 @@ def r_squared(
 def systematic_risk(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
 ) -> float:
     """Systematic risk refers to the risk due to general market factors and affects the entire industry. It cannot be diversified away. Here we use only one factor the market beta.
 
@@ -536,7 +536,7 @@ def systematic_risk(
 def specific_risk(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
 ) -> float:
     """is the risk specific to a company, crypto blockchain, ... that arises due to company-specific characteristics. According to portfolio theory, this risk can be eliminated through diversification.
 
@@ -561,7 +561,7 @@ def specific_risk(
 def jensen_alpha(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    N: Union[int, float] = 365,
+    N: Union[int, float] = 252,
 ) -> float:
     """The Jensen index or Jensen's alpha is a risk-adjusted performance benchmark that represents the average return on a portfolio or investment above or below that predicted by the capital asset pricing model (CAPM) given the portfolio's (or investment's) beta and the average market return.
 
