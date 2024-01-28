@@ -1,7 +1,7 @@
 from typing import Literal
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression, TheilSenRegressor
+from sklearn.linear_model import Lasso, LinearRegression, Ridge, TheilSenRegressor
 from tqdm import tqdm
 
 
@@ -11,7 +11,7 @@ def compute_trend_target_on_dataframe(
     forward_window: int = 60,
     target_name: str = "target",
     drop_na: bool = True,
-    regression_type: Literal["linear", "theilsen"] = "linear",
+    regression_type: Literal["linear", "theilsen","lasso","ridge"] = "linear",
 ) -> pd.DataFrame:
     """Compute a forward looking linear regression and extract the slope as the target corresponding the future of the trend.
 
@@ -22,7 +22,7 @@ def compute_trend_target_on_dataframe(
         forward_window (int): The number of days to look forward.
         target_name (str, optional): The name of the feature created in the dataframe's columns. Defaults to "target".
         drop_na (bool, optional): Whether to keep NaN or not.. Defaults to True.
-        regression_type (Literal[&quot;linear&quot;, &quot;theilsen&quot;], optional): The regressor to use, be carefull it could be long using the theilsen. Defaults to "linear".
+        regression_type (Literal[&quot;linear&quot;, &quot;theilsen&quot;, &quot;lasso&quot;, &quot;ridge&quot;], optional): The regressor to use, be carefull it could be long using the theilsen. Defaults to "linear".
 
     Returns:
     ----
@@ -31,6 +31,8 @@ def compute_trend_target_on_dataframe(
     __REGRESSORS = {
         "linear": LinearRegression,
         "theilsen": TheilSenRegressor,
+        "lasso": Lasso,
+        "ridge": Ridge,
     }
     assert (
         regression_type in __REGRESSORS.keys()
