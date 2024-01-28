@@ -39,6 +39,7 @@ def compute_trend_target_on_dataframe(
     assert original_feature in dataframe.columns, f"{original_feature} not in dataframe"
 
     dataframe[target_name] = np.nan
+    forward_window = int(forward_window)
     X = np.array([i for i in range(0, forward_window)]).reshape(
         -1, 1
     )  # fake x values, it wont change in the loop.
