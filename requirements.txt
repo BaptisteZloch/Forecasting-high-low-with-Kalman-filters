@@ -11,6 +11,7 @@ ipykernel
 black
 requests
 ta
+# pip install git+https://github.com/BaptisteZloch/Quant-Invest-Lab.git
 quant-invest-lab>=0.2.11
 latex
 sdeint
