@@ -1,4 +1,4 @@
-pandas
+pandas==1.5.3
 numpy
 scipy
 statsmodels
@@ -11,6 +11,15 @@ ipykernel
 black
 requests
 ta
+<<<<<<< HEAD
 quant-invest-lab
+=======
+# pip install git+https://github.com/BaptisteZloch/Quant-Invest-Lab.git
+quant-invest-lab>=0.2.11
+>>>>>>> da8ebf9d457f939ac4c62298602276dfe4ca6bcc
 latex
 sdeint
+tensorflow
+keras
+scikit-learn
+openpyxl
