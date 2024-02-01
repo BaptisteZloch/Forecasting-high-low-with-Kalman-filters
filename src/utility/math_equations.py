@@ -33,7 +33,7 @@ def compute_current_variance(
         + kappa * (theta - np.abs(previous_variance)) * dt
         + xi * np.sqrt(np.abs(previous_variance)) * dW
     )
-    return np.abs(v)
+    return v
 
 
 def compute_current_price(
@@ -60,7 +60,7 @@ def compute_current_price(
     return previous_price * (
         1
         + (mu - 0.5 * previous_variance) * dt
-        + np.sqrt(np.abs(previous_variance)) * dW
+        + np.sqrt(np.exp(previous_variance)) * dW
     )
 
 

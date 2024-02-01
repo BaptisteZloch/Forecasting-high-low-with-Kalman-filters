@@ -158,13 +158,12 @@ class StochasticModels:
         for i in tqdm(
             range(1, n_steps + 1), desc="Generating path", total=n_steps, leave=False
         ):
-            V[i] = (
+            V[i] = np.abs(
                 V[i - 1]
                 + (
                     kappa * (theta - V[i - 1]) * dt
                     + xi * np.sqrt(np.abs(V[i - 1])) * dW[i, 0]
                 )
-                + np.abs(poisson_jumps[i])
             )
             S[i] = S[i - 1] * (
                 np.exp(
