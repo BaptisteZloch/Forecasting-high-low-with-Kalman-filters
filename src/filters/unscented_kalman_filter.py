@@ -38,15 +38,16 @@ class UnscentedKalmanFilter:
         self.alpha = 0.001
         self.beta = 2.0
 
-        alpha_2 = self.alpha**2
-        self.lambda_ = alpha_2 * (self.dim_a + self.kappa) - self.dim_a
+        self.lambda_ = (self.alpha**2) * (self.dim_a + self.kappa) - self.dim_a
 
         # setting scale coefficient for selecting sigma points
         self.sigma_scale = np.sqrt(self.dim_a + self.kappa)
 
         # calculate unscented weights
-        self.W0 = self.kappa / (self.dim_a + self.kappa)
-        self.Wi = 0.5 / (self.dim_a + self.kappa)
+        self.W0 = self.lambda_ / (self.dim_a + self.lambda_)
+        # self.W0 = self.kappa / (self.dim_a + self.kappa)
+        # self.Wi = 0.5 / (self.dim_a + self.kappa)
+        self.Wi = 0.5 / (self.dim_a + self.lambda_)
 
         # initializing augmented state x_a and augmented covariance P_a
         self.x_a = np.zeros((self.dim_a,))
@@ -230,9 +231,10 @@ class UnscentedKalmanFilter:
         if self.verbose:
             print(f"P={P}")
 
-        _, S, _ = scipy.linalg.lu(P)
-        # S = np.linalg.cholesky(P)
-
+        try:
+            S = np.linalg.cholesky(P)
+        except:
+            _, S, _ = scipy.linalg.lu(P)
         for i in range(nx):
             x_sigma[:, i + 1] = x + (self.sigma_scale * S[:, i])
             x_sigma[:, i + nx + 1] = x - (self.sigma_scale * S[:, i])
